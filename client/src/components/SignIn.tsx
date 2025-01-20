@@ -2,6 +2,7 @@ import React, { useState, ChangeEvent, FormEvent } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { adminSignin } from "../services/AdminServices";
 import toast from "react-hot-toast";
+import Loader from "./Loader";
 
 interface SignInFormState {
     email: string;
@@ -13,6 +14,7 @@ const SignIn: React.FC = () => {
         email: "",
         password: "",
     });
+    const [loading, setLoading] = useState<boolean>(false)
     const navigate = useNavigate()
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -22,22 +24,25 @@ const SignIn: React.FC = () => {
 
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        // console.log("Form submitted:", formData);
+        setLoading(true)
 
+        // console.log("Form submitted:", formData);
         const response = await adminSignin(formData)
         // console.log(response);
 
-        if(!response.success){
+        if (!response.success) {
             toast.error(response.message)
+            setLoading(false)
             return;
         }
 
         toast.success(response.message)
-        localStorage.setItem("token" ,JSON.stringify(response.token))
+        localStorage.setItem("token", JSON.stringify(response.token))
         setFormData({ email: "", password: "" });
         navigate('/dashboard')
-
+        setLoading(false)
     };
+
     return (
         <div className="flex justify-center items-center w-full min-h-screen bg-gradient-to-r from-teal-400 to-blue-500">
             <form
@@ -86,9 +91,9 @@ const SignIn: React.FC = () => {
                 </div>
                 <button
                     type="submit"
-                    className="w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 transition duration-300"
+                    className="w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 transition duration-300 flex items-center justify-center"
                 >
-                    Sign In
+                    {loading ? <Loader /> : 'Sign In'}
                 </button>
                 <h3 className="text-sm text-center mt-2">Don't have an Account? <Link to={'/auth/signup'} className="hover:underline text-blue-500">Sign Up</Link></h3>
             </form>

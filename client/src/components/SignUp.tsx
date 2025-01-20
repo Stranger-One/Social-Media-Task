@@ -2,6 +2,7 @@ import React, { useState, ChangeEvent, FormEvent } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { adminSignup } from "../services/AdminServices";
 import toast from "react-hot-toast";
+import Loader from "./Loader";
 
 interface SignInFormState {
     name: string;
@@ -15,6 +16,7 @@ const SignUp: React.FC = () => {
         email: "",
         password: "",
     });
+    const [loading, setLoading] = useState<boolean>(false)
     const navigate = useNavigate()
 
 
@@ -25,6 +27,7 @@ const SignUp: React.FC = () => {
 
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+        setLoading(true)
         // console.log("Form submitted:", formData);
 
 
@@ -33,6 +36,8 @@ const SignUp: React.FC = () => {
         if (!response.success) {
             const msg = response.error ? response.error.split(':')[2] : response.message
             toast.error(msg)
+            setLoading(false)
+
             return;
         }
 
@@ -40,8 +45,9 @@ const SignUp: React.FC = () => {
         localStorage.setItem("token", JSON.stringify(response.token))
         setFormData({ name: "", email: "", password: "" });
         navigate('/dashboard')
-
+        setLoading(false)
     };
+
     return (
         <div className="flex justify-center items-center w-full min-h-screen bg-gradient-to-r from-teal-400 to-blue-500">
             <form
@@ -107,9 +113,9 @@ const SignUp: React.FC = () => {
                 </div>
                 <button
                     type="submit"
-                    className="w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 transition duration-300"
+                    className="w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 transition duration-300 flex items-center justify-center"
                 >
-                    Sign Up
+                    {loading ? <Loader/> : "Sign Up" } 
                 </button>
                 <h3 className="text-sm text-center mt-2">Already have an Account? <Link to={'/auth/signin'} className="hover:underline text-blue-500">Sign In</Link></h3>
             </form>
