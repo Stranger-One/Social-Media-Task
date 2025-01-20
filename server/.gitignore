@@ -1,0 +1,27 @@
+# Node modules
+node_modules/
+node_modules
+
+# Build output
+dist/
+build/
+
+# Logs
+logs
+*.log
+npm-debug.log*
+
+# Environment variables
+.env
+
+# Temporary files
+tmp/
+temp/
+
+# IDE specific files
+.vscode/
+.idea/
+.DS_Store
+
+# Coverage directory used by tools like istanbul
+coverage/
