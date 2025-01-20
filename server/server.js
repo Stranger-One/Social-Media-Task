@@ -5,13 +5,17 @@ import dotenv from 'dotenv';
 import MediaRouter from './routers/MediaRouter.js'
 import AdminRouter from './routers/AdminRouter.js'
 
-
 dotenv.config();
 
 const app = express();
 
+ // Start of Selection
 // Middleware
-app.use(cors());
+app.use(cors({
+    origin: process.env.FRONTEND_URL, // Allow requests from the frontend
+    methods: ['GET', 'POST', 'PUT', 'DELETE'], // Allow specific HTTP methods
+    credentials: true // Allow credentials to be sent
+}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
