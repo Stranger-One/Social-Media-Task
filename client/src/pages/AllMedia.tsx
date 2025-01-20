@@ -16,7 +16,7 @@ const AllMedia: React.FC = () => {
                 Authorization: `Bearer ${token}`
             }
         });
-        // console.log("response", response.data);
+        console.log("response", response.data);
         if(response?.data?.success){
             setAllMedia(response.data.media)
         }

@@ -54,7 +54,7 @@ const SubmissionForm: React.FC = () => {
             setLoading(false);
         }
 
-        // console.log("response", response.data);
+        console.log("response", response.data);
         if (!response?.data?.success) {
             toast.error("Upload failed. Please try again later.");
             return;
