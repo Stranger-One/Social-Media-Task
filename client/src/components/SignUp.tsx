@@ -32,7 +32,7 @@ const SignUp: React.FC = () => {
 
 
         const response = await adminSignup(formData)
-        console.log("response", response);
+        // console.log("response", response);
         if (!response.success) {
             const msg = response.error ? response.error.split(':')[2] : response.message
             toast.error(msg)
